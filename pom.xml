@@ -101,6 +101,14 @@
 					<warName>${project.artifactId}</warName>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<artifactId>maven-ear-plugin</artifactId>
+				<version>3.2.0</version>
+				<configuration>
+					<outputDirectory>target/wildfly-${version.wildfly}/standalone/deployments</outputDirectory>
+				</configuration>
+			</plugin>
 		</plugins>
 		<resources>
 			<resource>
