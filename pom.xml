@@ -20,8 +20,9 @@
 		<version.hibernate_core>5.4.30.Final</version.hibernate_core>
 		<version.postgresql>42.2.19</version.postgresql>
 
-		<version.maven_war_plugin>3.3.1</version.maven_war_plugin>
-		<version.maven_compiler-plugin>3.8.1</version.maven_compiler-plugin>
+		<version.wildfly_maven_plugin>2.0.2.Final</version.wildfly_maven_plugin>
+
+		<version.wildfly>23.0.0.Final</version.wildfly>
 
 		<failOnMissingWebXml>false</failOnMissingWebXml>
 	</properties>
@@ -58,14 +59,47 @@
 		<finalName>${project.artifactId}</finalName>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>${version.maven_war_plugin}</version>
+				<groupId>org.wildfly.plugins</groupId>
+				<artifactId>wildfly-maven-plugin</artifactId>
+				<version>${version.wildfly_maven_plugin}</version>
 			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>${version.maven_compiler-plugin}</version>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>3.0.0</version>
+				<executions>
+					<execution>
+						<id>unpack</id>
+						<phase>package</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>org.wildfly</groupId>
+									<artifactId>wildfly-dist</artifactId>
+									<version>${version.wildfly}</version>
+									<type>zip</type>
+									<overWrite>false</overWrite>
+									<outputDirectory>target</outputDirectory>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>3.0.0</version>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+					<outputDirectory>target/wildfly-${version.wildfly}/standalone/deployments</outputDirectory>
+					<warName>${project.artifactId}</warName>
+				</configuration>
 			</plugin>
 		</plugins>
 		<resources>

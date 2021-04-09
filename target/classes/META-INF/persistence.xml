@@ -6,6 +6,11 @@
 	<persistence-unit name="test" transaction-type="JTA">
 		<jta-data-source>java:/test</jta-data-source>
 		<class>co.com.emil5.test.entity.Client</class>
+		<class>co.com.emil5.test.entity.Token</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
+		<properties>
+			<property name="hibernate.hbm2ddl.auto" value="update"/>
+			<property name="org.hibernate.event.internal.DefaultPersistEventListener" value="true"/>
+		</properties>
 	</persistence-unit>
 </persistence>
