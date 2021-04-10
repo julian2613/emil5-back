@@ -31,7 +31,7 @@ import lombok.ToString;
 @ToString
 public class Token implements Serializable {
 
-	public final static long VALIDITY = 300000;
+	public final static long VALIDITY = 60000;
 
 	private static final long serialVersionUID = -7180136805985628852L;
 

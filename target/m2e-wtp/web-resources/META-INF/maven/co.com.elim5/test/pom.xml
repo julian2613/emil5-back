@@ -14,15 +14,15 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 
-		<version.javaee_api>8.0.1</version.javaee_api>
+		<version.javaee-api>8.0.1</version.javaee-api>
 		<version.lombok>1.18.20</version.lombok>
 
-		<version.hibernate_core>5.4.30.Final</version.hibernate_core>
+		<version.hibernate-core>5.4.30.Final</version.hibernate-core>
 		<version.postgresql>42.2.19</version.postgresql>
 
-		<version.wildfly_maven_plugin>2.0.2.Final</version.wildfly_maven_plugin>
-
-		<version.wildfly>23.0.0.Final</version.wildfly>
+		<version.maven-war-plugin>3.3.1</version.maven-war-plugin>
+		<version.maven-compiler-plugin>3.8.1</version.maven-compiler-plugin>
+		<version.wildfly-maven-plugin>2.0.2.Final</version.wildfly-maven-plugin>
 
 		<failOnMissingWebXml>false</failOnMissingWebXml>
 	</properties>
@@ -31,7 +31,7 @@
 		<dependency>
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>
-			<version>${version.javaee_api}</version>
+			<version>${version.javaee-api}</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -45,68 +45,39 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>${version.hibernate_core}</version>
+			<version>${version.hibernate-core}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>${version.postgresql}</version>
 		</dependency>
-
 	</dependencies>
 
 	<build>
 		<finalName>${project.artifactId}</finalName>
 		<plugins>
 			<plugin>
-				<groupId>org.wildfly.plugins</groupId>
-				<artifactId>wildfly-maven-plugin</artifactId>
-				<version>${version.wildfly_maven_plugin}</version>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>3.0.0</version>
-				<executions>
-					<execution>
-						<id>unpack</id>
-						<phase>package</phase>
-						<goals>
-							<goal>unpack</goal>
-						</goals>
-						<configuration>
-							<artifactItems>
-								<artifactItem>
-									<groupId>org.wildfly</groupId>
-									<artifactId>wildfly-dist</artifactId>
-									<version>${version.wildfly}</version>
-									<type>zip</type>
-									<overWrite>false</overWrite>
-									<outputDirectory>target</outputDirectory>
-								</artifactItem>
-							</artifactItems>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
-				<version>3.0.0</version>
-				<configuration>
-					<failOnMissingWebXml>false</failOnMissingWebXml>
-					<outputDirectory>target/wildfly-${version.wildfly}/standalone/deployments</outputDirectory>
-					<warName>${project.artifactId}</warName>
-				</configuration>
+				<version>${version.maven-war-plugin}</version>
 			</plugin>
-
 			<plugin>
-				<artifactId>maven-ear-plugin</artifactId>
-				<version>3.2.0</version>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${version.maven-compiler-plugin}</version>
+			</plugin>
+			<plugin>
+				<groupId>org.wildfly.plugins</groupId>
+				<artifactId>wildfly-maven-plugin</artifactId>
+				<version>${version.wildfly-maven-plugin}</version>
 				<configuration>
-					<outputDirectory>target/wildfly-${version.wildfly}/standalone/deployments</outputDirectory>
+					<hostname>34.71.5.25</hostname>
+					<port>9991</port>
+					<username>admin</username>
+					<password>admin</password>
+					<jboss-home>local-jboss-home</jboss-home>
+					<name>${project.build.finalName}.${project.packaging}</name>
 				</configuration>
 			</plugin>
 		</plugins>

@@ -7,6 +7,6 @@ import co.com.emil5.test.entity.Token;
 @Local
 public interface ITokenRepository extends IFacadeRepository<Token> {
 
-	public Token getByClient(String clientId);
+	public Token getByClient(String email);
 
 }

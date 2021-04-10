@@ -5,6 +5,8 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import co.com.emil5.test.excepcion.DatosExcepcion;
+
 public abstract class FacadeRepository<T> {
 
 	@PersistenceContext(unitName = "test")
@@ -12,11 +14,15 @@ public abstract class FacadeRepository<T> {
 
 	protected abstract Class<T> getType();
 
-	public T save(T entity) {
-		T newEntity = this.entityManager.merge(entity);
-		this.entityManager.flush();
+	public T save(T entity) throws DatosExcepcion {
+		try {
+			T newEntity = this.entityManager.merge(entity);
+			this.entityManager.flush();
 
-		return newEntity;
+			return newEntity;
+		} catch (Exception e) {
+			throw new DatosExcepcion(e);
+		}
 	}
 
 	public T readById(String id) {

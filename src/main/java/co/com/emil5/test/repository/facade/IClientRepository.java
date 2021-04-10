@@ -7,4 +7,6 @@ import co.com.emil5.test.entity.Client;
 @Local
 public interface IClientRepository extends IFacadeRepository<Client> {
 
+	public Client getByEmail(String email);
+
 }

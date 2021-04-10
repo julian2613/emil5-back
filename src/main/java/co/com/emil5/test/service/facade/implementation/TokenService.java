@@ -6,6 +6,7 @@ import javax.ejb.Stateless;
 import co.com.emil5.test.dto.TokenDto;
 import co.com.emil5.test.entity.Client;
 import co.com.emil5.test.entity.Token;
+import co.com.emil5.test.excepcion.DatosExcepcion;
 import co.com.emil5.test.repository.facade.IClientRepository;
 import co.com.emil5.test.repository.facade.IFacadeRepository;
 import co.com.emil5.test.repository.facade.ITokenRepository;
@@ -26,11 +27,11 @@ public class TokenService extends FacadeService<Token> implements ITokenService 
 	}
 
 	@Override
-	public TokenDto generate(String clientId) {
-		Token oldToken = this.tokenRepository.getByClient(clientId);
+	public TokenDto generate(String email) throws DatosExcepcion {
+		Token oldToken = this.tokenRepository.getByClient(email);
 
 		if (oldToken == null) {
-			return new TokenDto(this.newToken(clientId));
+			return new TokenDto(this.newToken(email));
 		} else {
 			if (oldToken.getValid().equals("TOKEN IS VALID")) {
 				oldToken.getClient().addVisit();
@@ -38,7 +39,7 @@ public class TokenService extends FacadeService<Token> implements ITokenService 
 				return new TokenDto(oldToken);
 			} else {
 				this.tokenRepository.delete(oldToken);
-				return new TokenDto(this.newToken(clientId));
+				return new TokenDto(this.newToken(email));
 			}
 		}
 	}
@@ -52,9 +53,8 @@ public class TokenService extends FacadeService<Token> implements ITokenService 
 		return new TokenDto(this.tokenRepository.readById(id));
 	}
 
-	private Token newToken(String clientId) {
-		Client client = new Client();
-		client.setId(clientId);
+	private Token newToken(String email) throws DatosExcepcion {
+		Client client = this.clientRepository.getByEmail(email);
 
 		Token token = new Token();
 		token.setClient(client);

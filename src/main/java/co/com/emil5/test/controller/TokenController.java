@@ -9,6 +9,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import co.com.emil5.test.excepcion.DatosExcepcion;
 import co.com.emil5.test.service.facade.ITokenService;
 
 @Path("/token")
@@ -26,11 +27,11 @@ public class TokenController {
 	}
 
 	@POST
-	@Path("{clientId}/generate")
+	@Path("{email}/generate")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response generate(@PathParam("clientId") String clientId) {
-		return Response.ok(this.tokenService.generate(clientId)).build();
+	public Response generate(@PathParam("email") String email) throws DatosExcepcion {
+		return Response.ok(this.tokenService.generate(email)).build();
 	}
 
 }

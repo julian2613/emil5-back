@@ -16,10 +16,10 @@ public class TokenRepository extends FacadeRepository<Token> implements ITokenRe
 	}
 
 	@Override
-	public Token getByClient(String clientId) {
+	public Token getByClient(String email) {
 		List<Token> tokens = this.entityManager
-				.createQuery("SELECT t FROM Token t WHERE t.client.id = :clientId", Token.class)
-				.setParameter("clientId", clientId).getResultList();
+				.createQuery("SELECT t FROM Token t WHERE t.client.email = :email", Token.class)
+				.setParameter("clientId", email).getResultList();
 
 		if (!tokens.isEmpty()) {
 			return tokens.get(0);
